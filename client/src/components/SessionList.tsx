@@ -31,11 +31,15 @@ export function SessionList() {
     .slice(0, MAX_VISIBLE_SESSIONS);
 
   const handleClick = (sessionId: string) => {
-    fetch("/api/open-terminal", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId }),
-    }).catch(() => {});
+    if (window.piWatch?.openSession) {
+      window.piWatch.openSession(sessionId).catch(() => {});
+    } else {
+      fetch("/api/open-terminal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      }).catch(() => {});
+    }
   };
 
   return (

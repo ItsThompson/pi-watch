@@ -4,7 +4,10 @@ import { ActivityLog } from "./components/ActivityLog";
 
 declare global {
   interface Window {
-    piWatch?: { resizeMini: (height: number) => void };
+    piWatch?: {
+      resizeMini: (height: number) => void;
+      openSession: (id: string) => Promise<unknown>;
+    };
   }
 }
 
