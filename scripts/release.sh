@@ -124,7 +124,7 @@ fi
 # --- Commit, tag, push ---
 
 git add package.json */package.json package-lock.json
-git commit -m "chore: release v$NEW_VERSION"
+git diff --cached --quiet || git commit -m "chore: release v$NEW_VERSION"
 git tag -a "v$NEW_VERSION" -m "v$NEW_VERSION"
 git push --follow-tags
 
