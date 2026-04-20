@@ -34,7 +34,7 @@ export class ActivityTracker {
   }
 
   onToolEnd(): void {
-    if (this.runningTools <= 0) return;
+    if (this.runningTools <= 0) {return;}
     this.runningTools--;
     if (this.runningTools === 0) {
       this.transition("processing");

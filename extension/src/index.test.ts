@@ -36,7 +36,7 @@ function createFakePi(): FakePi {
 
 function getHandler(pi: FakePi, event: string): (...args: unknown[]) => Promise<void> {
   const call = pi.on.mock.calls.find((c: unknown[]) => c[0] === event);
-  if (!call) throw new Error(`No handler for ${event}`);
+  if (!call) {throw new Error(`No handler for ${event}`);}
   return call[1] as (...args: unknown[]) => Promise<void>;
 }
 

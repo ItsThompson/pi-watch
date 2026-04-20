@@ -28,9 +28,9 @@ export function classify(
   list: { count: number; first: string | null },
   target: TmuxTarget | null,
 ): "ok" | "not-in-tmux" | "no-client" | "multi-client" {
-  if (!target) return "not-in-tmux";
-  if (list.count === 0) return "no-client";
-  if (list.count > 1) return "multi-client";
+  if (!target) {return "not-in-tmux";}
+  if (list.count === 0) {return "no-client";}
+  if (list.count > 1) {return "multi-client";}
   return "ok";
 }
 
@@ -44,7 +44,7 @@ function defaultExecFile(cmd: string, args: string[]): Promise<{ stdout: string;
 
 export function parseTmuxTarget(raw: string): TmuxTarget | null {
   const match = raw.match(/^(.+):(\d+)\.(\d+)$/);
-  if (!match) return null;
+  if (!match) {return null;}
   return { session: match[1], window: match[2], pane: match[3] };
 }
 

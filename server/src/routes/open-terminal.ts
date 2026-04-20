@@ -4,8 +4,8 @@ import { openTerminalBodySchema } from "../schemas.js";
 
 export function resolveOpenTarget(registry: SessionRegistry, sessionId: string) {
   const session = registry.get(sessionId);
-  if (!session) return { error: "session not found" };
-  if (!session.tmuxTarget) return { error: "session was not started inside tmux" };
+  if (!session) {return { error: "session not found" };}
+  if (!session.tmuxTarget) {return { error: "session was not started inside tmux" };}
   return { session, tmuxTarget: session.tmuxTarget };
 }
 

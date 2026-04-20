@@ -17,7 +17,7 @@ export function App() {
 
   useEffect(() => {
     const el = contentRef.current;
-    if (!el || !window.piWatch?.resizeMini) return;
+    if (!el || !window.piWatch?.resizeMini) {return;}
 
     const observer = new ResizeObserver(() => {
       window.piWatch!.resizeMini(el.offsetHeight);

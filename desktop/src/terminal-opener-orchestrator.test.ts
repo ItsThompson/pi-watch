@@ -13,7 +13,7 @@ function createFakes() {
   const exec = async (cmd: string, args: string[]) => {
     execCalls.push({ cmd, args });
     const result = execResults.shift();
-    if (result instanceof Error) throw result;
+    if (result instanceof Error) {throw result;}
     return result ?? { stdout: "", stderr: "" };
   };
 

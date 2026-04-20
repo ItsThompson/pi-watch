@@ -15,13 +15,13 @@ export function applyVisualState(state: {
   ghostEnabled: boolean;
   ghostOpacity: number;
 }): { opacity: number; ignoreMouse: boolean } {
-  if (!state.visible) return { opacity: 0, ignoreMouse: true };
-  if (state.ghostEnabled) return { opacity: state.ghostOpacity, ignoreMouse: true };
+  if (!state.visible) {return { opacity: 0, ignoreMouse: true };}
+  if (state.ghostEnabled) {return { opacity: state.ghostOpacity, ignoreMouse: true };}
   return { opacity: 1, ignoreMouse: false };
 }
 
 function syncVisualState(): void {
-  if (!win) return;
+  if (!win) {return;}
   const { opacity, ignoreMouse } = applyVisualState({
     visible,
     ghostEnabled,
@@ -63,7 +63,7 @@ export function createWindow(url: string, config: PiWatchConfig): void {
   });
 
   ipcMain.on("pw:resize", (_event, height: number) => {
-    if (!win) return;
+    if (!win) {return;}
     const clamped = Math.min(600, Math.max(MIN_HEIGHT, Math.round(height)));
     const [x, y] = win.getPosition();
     win.setBounds({ x, y, width: WIDTH, height: clamped });
@@ -83,7 +83,7 @@ export function setGhostMode(enabled: boolean, opacity: number): void {
 }
 
 export function toggleWindow(): boolean {
-  if (!win) return false;
+  if (!win) {return false;}
   visible = !visible;
   syncVisualState();
   return visible;

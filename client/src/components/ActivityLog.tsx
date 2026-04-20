@@ -14,7 +14,7 @@ function entryActivity(event: {
   type: string;
   activity?: ActivityStatus;
 }): ActivityStatus {
-  if (event.type === "session:removed") return "idle";
+  if (event.type === "session:removed") {return "idle";}
   return (event as { activity?: ActivityStatus }).activity ?? "idle";
 }
 
@@ -23,7 +23,7 @@ export function ActivityLog() {
 
   const visible = entries.slice(0, MAX_VISIBLE);
 
-  if (visible.length === 0) return null;
+  if (visible.length === 0) {return null;}
 
   return (
     <div

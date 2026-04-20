@@ -35,7 +35,7 @@ export default function (pi: ExtensionAPI) {
 
       client.startHeartbeats(async () => {
         const freshTmux = await captureTmuxTarget(process.env, exec);
-        if (freshTmux) lastKnownTmuxTarget = freshTmux.target;
+        if (freshTmux) {lastKnownTmuxTarget = freshTmux.target;}
         return {
           sessionId: sessionId!,
           tmuxTarget: freshTmux?.target ?? lastKnownTmuxTarget,
@@ -87,7 +87,7 @@ export default function (pi: ExtensionAPI) {
   pi.on("session_shutdown", async () => {
     try {
       client.stopHeartbeats();
-      if (sessionId) await client.unregister(sessionId);
+      if (sessionId) {await client.unregister(sessionId);}
     } catch (err) {
       console.error("[pi-watch] session_shutdown error:", err);
     }

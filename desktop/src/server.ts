@@ -71,7 +71,7 @@ export function start(): void {
 }
 
 export function stop(): void {
-  if (!child) return;
+  if (!child) {return;}
   const ref = child;
   child = null;
   ref.kill("SIGTERM");
@@ -88,14 +88,14 @@ export function waitForReady(retries = 30): Promise<void> {
     const attempt = (remaining: number) => {
       http
         .get(`${SERVER_URL}/api/health`, (res) => {
-          if (res.statusCode === 200) return resolve();
+          if (res.statusCode === 200) {return resolve();}
           retry(remaining);
         })
         .on("error", () => retry(remaining));
     };
 
     const retry = (remaining: number) => {
-      if (remaining <= 0) return reject(new Error("Server failed to start"));
+      if (remaining <= 0) {return reject(new Error("Server failed to start"));}
       setTimeout(() => attempt(remaining - 1), 200);
     };
 

@@ -73,7 +73,7 @@ export function createSessionRegistry(options: RegistryOptions) {
 
     unregister(sessionId: string): void {
       const entry = entries.get(sessionId);
-      if (!entry) return;
+      if (!entry) {return;}
       entries.delete(sessionId);
       emit("removed", entry);
     },

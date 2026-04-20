@@ -14,7 +14,7 @@ function displayName(session: RegisteredSession): string {
 export function SessionList() {
   const { sessions, isLoading } = useSessions();
 
-  if (isLoading) return null;
+  if (isLoading) {return null;}
 
   const sorted = [...sessions]
     .sort(

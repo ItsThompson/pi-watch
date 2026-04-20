@@ -25,7 +25,7 @@ async function waitForServer(url: string, retries = 30): Promise<void> {
   for (let i = 0; i < retries; i++) {
     try {
       const res = await fetch(`${url}/api/health`);
-      if (res.ok) return;
+      if (res.ok) {return;}
     } catch {}
     await new Promise((resolve) => setTimeout(resolve, 200));
   }
@@ -50,7 +50,7 @@ async function waitForTestHarness(app: ElectronApplication, retries = 30): Promi
     const ready = await app.evaluate(async () => {
       return typeof (global as Record<string, unknown>).__piWatchTest !== "undefined";
     });
-    if (ready) return;
+    if (ready) {return;}
     await new Promise((resolve) => setTimeout(resolve, 200));
   }
   throw new Error("__piWatchTest harness not available");

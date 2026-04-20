@@ -7,11 +7,11 @@ function stubNodeBuiltins(): Plugin {
     enforce: "pre",
     resolveId(source) {
       if (source.startsWith("node:"))
-        return { id: `\0${source}`, moduleSideEffects: false };
+        {return { id: `\0${source}`, moduleSideEffects: false };}
     },
     load(id) {
       if (id.startsWith("\0node:"))
-        return "export const join = () => ''; export const resolve = () => ''; export const dirname = () => ''; export const basename = () => ''; export const homedir = () => ''; export const tmpdir = () => ''; export default {};";
+        {return "export const join = () => ''; export const resolve = () => ''; export const dirname = () => ''; export const basename = () => ''; export const homedir = () => ''; export const tmpdir = () => ''; export default {};";}
     },
   };
 }

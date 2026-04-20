@@ -22,7 +22,7 @@ export function useSessions(): {
         const list = current ?? [];
         if (eventType === "session:added") {
           const session = payload as RegisteredSession;
-          if (list.some((s) => s.sessionId === session.sessionId)) return list;
+          if (list.some((s) => s.sessionId === session.sessionId)) {return list;}
           return [...list, session];
         }
         if (eventType === "session:updated") {

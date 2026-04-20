@@ -24,7 +24,7 @@ export function registerSessionRoutes(
 ): void {
   server.post("/api/sessions/register", async (request: FastifyRequest, reply: FastifyReply) => {
     const body = zodParse<RegisterBody>(registerBodySchema, request.body, reply);
-    if (!body) return;
+    if (!body) {return;}
 
     registry.register({
       sessionId: body.sessionId,
@@ -42,7 +42,7 @@ export function registerSessionRoutes(
 
   server.post("/api/sessions/heartbeat", async (request: FastifyRequest, reply: FastifyReply) => {
     const body = zodParse<HeartbeatBody>(heartbeatBodySchema, request.body, reply);
-    if (!body) return;
+    if (!body) {return;}
 
     registry.heartbeat(body);
     return { ok: true };
@@ -50,7 +50,7 @@ export function registerSessionRoutes(
 
   server.post("/api/sessions/unregister", async (request: FastifyRequest, reply: FastifyReply) => {
     const body = zodParse<UnregisterBody>(unregisterBodySchema, request.body, reply);
-    if (!body) return;
+    if (!body) {return;}
 
     registry.unregister(body.sessionId);
     return { ok: true };
