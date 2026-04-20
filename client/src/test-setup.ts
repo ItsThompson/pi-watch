@@ -1,5 +1,13 @@
 import "@testing-library/jest-dom";
 
+if (typeof globalThis.ResizeObserver === "undefined") {
+  globalThis.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof globalThis.ResizeObserver;
+}
+
 export class MockEventSource {
   static instances: MockEventSource[] = [];
   readyState = 0;
