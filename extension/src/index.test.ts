@@ -117,6 +117,10 @@ describe("extension entry wiring", () => {
   });
 
   it("heartbeat snapshot re-captures tmux target", async () => {
+    // captureTmuxTarget bails early unless TMUX is set
+    const originalTmux = process.env.TMUX;
+    process.env.TMUX = "/tmp/tmux-fake/default,12345,0";
+
     vi.useFakeTimers();
 
     const { execFile } = await import("node:child_process");
@@ -142,6 +146,13 @@ describe("extension entry wiring", () => {
 
     // execFile should have been called again for the heartbeat snapshot
     expect(mockExecFile.mock.calls.length).toBeGreaterThan(callCountAfterStart);
+
+    // Restore env
+    if (originalTmux === undefined) {
+      delete process.env.TMUX;
+    } else {
+      process.env.TMUX = originalTmux;
+    }
   });
 
   it("does not throw when handlers encounter errors", async () => {
