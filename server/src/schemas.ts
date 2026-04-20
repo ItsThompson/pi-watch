@@ -16,6 +16,7 @@ export const heartbeatBodySchema = z.object({
   activity: activitySchema,
   lastEventTime: z.string(),
   tmuxTarget: z.string().nullable().optional(),
+  agentName: z.string().optional(),
 });
 
 export const unregisterBodySchema = z.object({

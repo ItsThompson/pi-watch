@@ -35,6 +35,7 @@ export function registerSessionRoutes(
       activity: "idle",
       lastSeen: new Date().toISOString(),
       lastEventTime: body.startTime,
+      agentName: body.agentName,
     });
     return { ok: true };
   });

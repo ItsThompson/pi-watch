@@ -30,6 +30,7 @@ export default function (pi: ExtensionAPI) {
         cwd,
         tmuxTarget: lastKnownTmuxTarget,
         startTime: new Date().toISOString(),
+        agentName: pi.getSessionName() ?? undefined,
       });
 
       client.startHeartbeats(async () => {
@@ -38,6 +39,7 @@ export default function (pi: ExtensionAPI) {
         return {
           sessionId: sessionId!,
           tmuxTarget: freshTmux?.target ?? lastKnownTmuxTarget,
+          agentName: pi.getSessionName() ?? undefined,
           ...tracker.snapshot(),
         };
       });

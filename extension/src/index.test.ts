@@ -23,12 +23,14 @@ function stubHttp() {
 interface FakePi {
   on: ReturnType<typeof vi.fn>;
   events: EventEmitter;
+  getSessionName: ReturnType<typeof vi.fn>;
 }
 
 function createFakePi(): FakePi {
   return {
     on: vi.fn(),
     events: new EventEmitter(),
+    getSessionName: vi.fn().mockReturnValue(null),
   };
 }
 

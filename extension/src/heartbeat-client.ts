@@ -11,6 +11,7 @@ interface HeartbeatSnapshot {
   activity: string;
   lastEventTime: string;
   tmuxTarget: string | null;
+  agentName?: string;
 }
 
 function post(path: string, body: unknown): Promise<boolean> {
@@ -46,6 +47,7 @@ export class HeartbeatClient {
     cwd: string;
     tmuxTarget: string | null;
     startTime: string;
+    agentName?: string;
   }): Promise<void> {
     await post("/api/sessions/register", body);
   }

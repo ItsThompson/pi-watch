@@ -29,11 +29,13 @@ export function createSessionRegistry(options: RegistryOptions) {
       emit("added", stored);
     },
 
+
     heartbeat(payload: {
       sessionId: string;
       activity: ActivityStatus;
       lastEventTime: string;
       tmuxTarget?: string | null;
+      agentName?: string;
     }): void {
       const existing = entries.get(payload.sessionId);
       if (!existing) {
@@ -46,6 +48,7 @@ export function createSessionRegistry(options: RegistryOptions) {
           activity: payload.activity,
           lastSeen: new Date(options.now()).toISOString(),
           lastEventTime: payload.lastEventTime,
+          agentName: payload.agentName,
         };
         entries.set(payload.sessionId, newEntry);
         emit("added", newEntry);
@@ -58,6 +61,9 @@ export function createSessionRegistry(options: RegistryOptions) {
       existing.activity = payload.activity;
       if (payload.tmuxTarget !== undefined) {
         existing.tmuxTarget = payload.tmuxTarget ?? null;
+      }
+      if (payload.agentName !== undefined) {
+        existing.agentName = payload.agentName;
       }
 
       if (activityChanged) {

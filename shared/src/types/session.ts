@@ -13,6 +13,7 @@ export interface RegisteredSession {
   activity: ActivityStatus;
   lastSeen: string;
   lastEventTime: string;
+  agentName?: string;
 }
 
 export interface HeartbeatPayload {
@@ -20,6 +21,7 @@ export interface HeartbeatPayload {
   activity: ActivityStatus;
   lastEventTime: string;
   tmuxTarget?: string | null;
+  agentName?: string;
 }
 
 export type SSEEvent =
