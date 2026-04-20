@@ -1,6 +1,24 @@
 {
-  "name": "@pi-watch/extension",
+  "name": "pi-watch-extension",
   "version": "0.1.0",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "main": "src/index.ts",
+  "pi": {
+    "extensions": ["./dist/index.mjs"]
+  },
+  "scripts": {
+    "build": "tsc --noEmit && tsdown",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pi-watch/shared": "*"
+  },
+  "devDependencies": {
+    "@mariozechner/pi-coding-agent": "*",
+    "@types/node": "^22.15.3",
+    "tsdown": "^0.21.0",
+    "typescript": "^5.8.3",
+    "vitest": "^4.0.18"
+  }
 }
