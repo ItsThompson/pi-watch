@@ -67,8 +67,8 @@ npm run test --workspace e2e
 2. Open a tmux session and start a pi coding session.
 3. Verify the session appears in the overlay within 5 seconds.
 4. Press F5 to toggle overlay visibility.
-5. Enable Ghost Mode from the tray menu — overlay becomes translucent and click-through.
+5. Enable Ghost Mode from the tray menu: overlay becomes translucent and click-through.
 6. Click a session row to switch tmux to that pane.
-7. Kill a pi process with `kill -9` — verify it disappears within 20 seconds.
-8. Exit a pi session with Ctrl+D — verify it disappears immediately.
-9. Quit pi-watch from the tray — verify running pi sessions are unaffected.
+7. Kill a pi process with `kill -9`: verify it disappears within 20 seconds.
+8. Exit a pi session with Ctrl+D: verify it disappears immediately.
+9. Quit pi-watch from the tray: verify running pi sessions are unaffected.
