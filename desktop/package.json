@@ -14,6 +14,7 @@
   "build": {
     "appId": "com.pi-watch.app",
     "productName": "PiWatch",
+    "electronVersion": "35.7.5",
     "mac": {
       "target": "dmg",
       "identity": null,
