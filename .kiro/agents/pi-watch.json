@@ -1,0 +1,102 @@
+{
+  "$schema": "https://raw.githubusercontent.com/aws/amazon-q-developer-cli/refs/heads/main/schemas/agent-v1.json",
+  "name": "pi-watch",
+  "description": "pi-watch implementation agent for the Ralph Wiggum Loop. Executes one step per session.",
+  "prompt": "file://./pi-watch-prompt.md",
+  "tools": [
+    "fs_read", "fs_write", "execute_bash",
+    "grep", "glob", "code", "thinking", "web_fetch"
+  ],
+  "allowedTools": [
+    "fs_read", "grep", "glob", "code", "thinking", "web_fetch"
+  ],
+  "toolsSettings": {
+    "fs_read": {
+      "allowedPaths": [
+        "./**",
+        "~/Desktop/pi-watch/**",
+        "~/.pi/agent/extensions/tool-permissions/**",
+        "~/.config/ai/skills/**",
+        "~/.pi/agent/mcp-skills/**",
+        "~/.config/aerospace/aerospace.toml"
+      ]
+    },
+    "fs_write": {
+      "allowedPaths": [
+        "./shared/**",
+        "./server/**",
+        "./extension/**",
+        "./client/**",
+        "./desktop/**",
+        "./e2e/**",
+        "./scripts/**",
+        "./package.json",
+        "./package-lock.json",
+        "./turbo.json",
+        "./tsconfig.base.json",
+        "./eslint.config.mjs",
+        "./.gitignore",
+        "./README.md",
+        "~/.pi/agent/extensions/tool-permissions/index.ts",
+        "~/.pi/agent/extensions/tool-permissions/__tests__/**",
+        "~/.config/aerospace/aerospace.toml",
+        "~/Desktop/pi-watch/progress.md"
+      ]
+    },
+    "execute_bash": {
+      "allowedCommands": [
+        "npm install *", "npm test *", "npm run *",
+        "npx jest *", "npx tsx *", "npx vitest *", "node *",
+        "turbo *",
+        "git add *", "git commit *", "git status *", "git diff *",
+        "git init *", "git -C *", "git rev-parse *", "git revert *",
+        "mkdir *", "rm *", "cat *", "ls *", "ln *",
+        "chmod *", "bash *",
+        "nc *", "curl *", "lsof *"
+      ],
+      "autoAllowReadonly": true
+    }
+  },
+  "resources": [
+    "file:///Users/thompsnt/Desktop/pi-watch/current-step.md",
+    "file:///Users/thompsnt/Desktop/pi-watch/progress.md",
+    "file://README.md"
+  ],
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "~/.config/amazonq/global/hooks/weaver-log.sh",
+        "description": "Weaver: log agent spawn event"
+      }
+    ],
+    "userPromptSubmit": [
+      {
+        "command": "~/.config/amazonq/global/hooks/weaver-log.sh",
+        "description": "Weaver: log user prompt submission"
+      }
+    ],
+    "preToolUse": [
+      {
+        "matcher": "*",
+        "command": "~/.config/amazonq/global/hooks/weaver-log.sh",
+        "description": "Weaver: log pre-tool-use for all tools"
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "*",
+        "command": "~/.config/amazonq/global/hooks/weaver-log.sh",
+        "description": "Weaver: log post-tool-use for all tools",
+        "timeout_ms": 35000
+      }
+    ],
+    "stop": [
+      {
+        "command": "~/.config/amazonq/global/hooks/weaver-log.sh",
+        "description": "Weaver: log turn completion",
+        "timeout_ms": 165000
+      }
+    ]
+  },
+  "useLegacyMcpJson": false
+}
