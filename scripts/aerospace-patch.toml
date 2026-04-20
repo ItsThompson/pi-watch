@@ -1,0 +1,8 @@
+[[on-window-detected]]
+if.app-id = 'com.pi-watch.app'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.github.Electron'
+if.window-title-regex-substring = 'PiWatch'
+run = 'layout floating'
