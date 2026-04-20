@@ -15,15 +15,17 @@ test.describe("permission state transitions", () => {
     fakePi = await spawnFakePi({
       sessionId: "test-ac4",
       tmuxTarget: "main:0.0",
+      cwd: "/tmp/test-ac4",
       serverUrl,
     });
 
-    await expect(page.locator(`text=test-ac4`)).toBeVisible({ timeout: 5000 });
+    const row = page.locator("button", { hasText: "test-ac4" });
+    await expect(row).toBeVisible({ timeout: 5000 });
 
     fakePi.send("permission-start");
 
     // Dot should turn pending color (#f85149)
-    const dot = page.locator("button", { hasText: "test-ac4" }).locator("span").first();
+    const dot = row.locator("span").first();
     await expect(dot).toHaveCSS("color", "rgb(248, 81, 73)", { timeout: 5000 });
 
     fakePi.send("permission-end");

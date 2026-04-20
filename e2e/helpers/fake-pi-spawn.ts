@@ -1,8 +1,10 @@
-import { fork, type ChildProcess } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
 import { resolve } from "node:path";
 import { SERVER_PORT } from "@pi-watch/shared";
 
 const FIXTURE_PATH = resolve(import.meta.dirname, "../fixtures/fake-pi.ts");
+const REPO_ROOT = resolve(import.meta.dirname, "../..");
+const TSX_PATH = resolve(REPO_ROOT, "node_modules/.bin/tsx");
 
 export interface FakePi {
   send(command: string): void;
@@ -17,9 +19,8 @@ export function spawnFakePi(opts: {
   serverUrl?: string;
 }): Promise<FakePi> {
   const serverUrl = opts.serverUrl ?? `http://127.0.0.1:${SERVER_PORT}`;
-  const child: ChildProcess = fork(FIXTURE_PATH, [], {
-    stdio: ["pipe", "pipe", "pipe", "ipc"],
-    execArgv: ["--import", "tsx"],
+  const child: ChildProcess = spawn(TSX_PATH, [FIXTURE_PATH], {
+    stdio: ["pipe", "pipe", "pipe"],
     env: {
       ...process.env,
       FAKE_PI_SESSION_ID: opts.sessionId,
@@ -53,7 +54,6 @@ export function spawnFakePi(opts: {
           },
         });
       } else {
-        clearTimeout(timeout);
         reject(new Error(`fake-pi failed: ${data.trim()}`));
       }
     });

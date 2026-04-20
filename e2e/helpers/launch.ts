@@ -45,6 +45,17 @@ export function killPort(port: number): void {
   } catch {}
 }
 
+async function waitForTestHarness(app: ElectronApplication, retries = 30): Promise<void> {
+  for (let i = 0; i < retries; i++) {
+    const ready = await app.evaluate(async () => {
+      return typeof (global as Record<string, unknown>).__piWatchTest !== "undefined";
+    });
+    if (ready) return;
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+  throw new Error("__piWatchTest harness not available");
+}
+
 export const test = base.extend<AppFixtures>({
   tmpDir: async ({}, use) => {
     const dir = await mkdtemp(join(tmpdir(), "pi-watch-e2e-"));
@@ -65,6 +76,7 @@ export const test = base.extend<AppFixtures>({
         PI_WATCH_TEST: "1",
       },
     });
+    await waitForTestHarness(app);
     await use(app);
     killPort(SERVER_PORT);
     try {

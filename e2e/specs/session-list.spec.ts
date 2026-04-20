@@ -15,37 +15,43 @@ test.describe("session list", () => {
     fakePi = await spawnFakePi({
       sessionId: "test-ac1",
       tmuxTarget: "main:0.0",
+      cwd: "/tmp/test-ac1",
       serverUrl,
     });
 
-    await expect(page.locator(`text=test-ac1`)).toBeVisible({ timeout: 5000 });
+    const row = page.locator("button", { hasText: "test-ac1" });
+    await expect(row).toBeVisible({ timeout: 5000 });
   });
 
   test("AC-2: stopped heartbeat removes session within 20s", async ({ page, serverUrl }) => {
     fakePi = await spawnFakePi({
       sessionId: "test-ac2",
       tmuxTarget: "main:0.0",
+      cwd: "/tmp/test-ac2",
       serverUrl,
     });
 
-    await expect(page.locator(`text=test-ac2`)).toBeVisible({ timeout: 5000 });
+    const row = page.locator("button", { hasText: "test-ac2" });
+    await expect(row).toBeVisible({ timeout: 5000 });
 
     fakePi.send("stop-heartbeat");
 
-    await expect(page.locator(`text=test-ac2`)).not.toBeVisible({ timeout: 20000 });
+    await expect(row).not.toBeVisible({ timeout: 20000 });
   });
 
   test("AC-3: unregister removes session immediately", async ({ page, serverUrl }) => {
     fakePi = await spawnFakePi({
       sessionId: "test-ac3",
       tmuxTarget: "main:0.0",
+      cwd: "/tmp/test-ac3",
       serverUrl,
     });
 
-    await expect(page.locator(`text=test-ac3`)).toBeVisible({ timeout: 5000 });
+    const row = page.locator("button", { hasText: "test-ac3" });
+    await expect(row).toBeVisible({ timeout: 5000 });
 
     fakePi.send("unregister");
 
-    await expect(page.locator(`text=test-ac3`)).not.toBeVisible({ timeout: 2000 });
+    await expect(row).not.toBeVisible({ timeout: 2000 });
   });
 });

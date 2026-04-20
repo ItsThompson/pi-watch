@@ -10,6 +10,7 @@
     "@playwright/test": "^1.58.2",
     "@pi-watch/shared": "*",
     "playwright": "^1.58.2",
+    "tsx": "^4.19.4",
     "@types/node": "^22.15.3",
     "typescript": "^5.8.3"
   }
