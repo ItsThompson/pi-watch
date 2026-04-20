@@ -9,6 +9,16 @@ A macOS menu bar application that surfaces every active pi coding session on the
 - tmux
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) (optional, for floating layout)
 
+## Download a release
+
+Download the latest `.dmg` from the [releases page](https://github.com/ItsThompson/pi-watch/releases) and install the app. You still need to set up the hook scripts and CLI symlink below.
+
+Since the app is not code-signed, macOS may block it with a "damaged" error after downloading. To fix this, run:
+
+```bash
+sudo xattr -d com.apple.quarantine /Applications/PiWatch.app
+```
+
 ## Install and build
 
 ```bash
