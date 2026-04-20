@@ -99,7 +99,12 @@ npm run lint
 
 # --- Bump root package.json ---
 
-npm version "$NEW_VERSION" --no-git-tag-version
+PKG_VERSION=$(node -p "require('./package.json').version")
+if [[ "$PKG_VERSION" != "$NEW_VERSION" ]]; then
+  npm version "$NEW_VERSION" --no-git-tag-version
+else
+  echo "package.json already at $NEW_VERSION, skipping bump."
+fi
 
 # --- Build distribution ---
 
