@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { SessionList } from "./components/SessionList";
 import { ActivityLog } from "./components/ActivityLog";
+import { colors } from "./theme/colors";
 
 declare global {
   interface Window {
@@ -16,24 +17,40 @@ export function App() {
 
   useEffect(() => {
     const el = contentRef.current;
-    if (!el) return;
+    if (!el || !window.piWatch?.resizeMini) return;
 
-    const observer = new ResizeObserver((entries) => {
-      const height = entries[0]?.contentRect.height;
-      if (height) window.piWatch?.resizeMini(height);
+    const observer = new ResizeObserver(() => {
+      window.piWatch!.resizeMini(el.offsetHeight);
     });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div className="min-h-screen bg-page text-primary">
-      <div
-        className="h-7 w-full"
-        style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
-      />
+    <div
+      style={{
+        background: colors.backgroundPage,
+        color: colors.textPrimary,
+        fontFamily: "'Open Sans', sans-serif",
+      }}
+    >
       <div ref={contentRef}>
-        <SessionList />
+        <div
+          style={
+            {
+              height: 28,
+              WebkitAppRegion: "drag",
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 9999,
+            } as React.CSSProperties
+          }
+        />
+        <div style={{ padding: "28px 0" }}>
+          <SessionList />
+        </div>
         <ActivityLog />
       </div>
     </div>

@@ -42,6 +42,7 @@ export function createWindow(url: string, config: PiWatchConfig): void {
     alwaysOnTop: true,
     skipTaskbar: true,
     type: "panel",
+    backgroundColor: "#161d26",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

@@ -1,26 +1,20 @@
-import type { ActivityStatus } from "@pi-watch/shared";
+import type { RegisteredSession } from "@pi-watch/shared";
 import { MAX_VISIBLE_SESSIONS } from "@pi-watch/shared";
 import { useSessions } from "../hooks/useSessions";
+import { colors, ACTIVITY_COLORS } from "../theme/colors";
 
-const DOT_COLOR: Record<ActivityStatus, string> = {
-  idle: "text-activity-idle",
-  processing: "text-activity-processing",
-  running_tool: "text-activity-running",
-  pending_approval: "text-activity-pending",
-};
-
-function displayName(cwd: string, sessionId: string): string {
-  return cwd.split("/").pop() || sessionId.slice(0, 8);
+function displayName(session: RegisteredSession): string {
+  return (
+    session.agentName ||
+    session.cwd.split("/").pop() ||
+    session.sessionId.slice(0, 8)
+  );
 }
 
 export function SessionList() {
   const { sessions, isLoading } = useSessions();
 
   if (isLoading) return null;
-
-  if (sessions.length === 0) {
-    return <p className="text-muted text-sm px-3 py-2">No open sessions</p>;
-  }
 
   const sorted = [...sessions]
     .sort(
@@ -29,6 +23,20 @@ export function SessionList() {
         new Date(a.lastEventTime).getTime(),
     )
     .slice(0, MAX_VISIBLE_SESSIONS);
+
+  if (sorted.length === 0) {
+    return (
+      <div
+        style={{
+          padding: "16px 12px",
+          fontSize: 13,
+          color: colors.textMuted,
+        }}
+      >
+        No open sessions
+      </div>
+    );
+  }
 
   const handleClick = (sessionId: string) => {
     if (window.piWatch?.openSession) {
@@ -43,21 +51,32 @@ export function SessionList() {
   };
 
   return (
-    <ul className="space-y-1 px-2">
+    <div>
       {sorted.map((session) => (
-        <li key={session.sessionId}>
-          <button
-            type="button"
-            className="flex w-full items-center gap-2 rounded px-2 py-1 text-sm text-primary hover:bg-divider"
-            onClick={() => handleClick(session.sessionId)}
+        <div
+          key={session.sessionId}
+          onClick={() => handleClick(session.sessionId)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "8px 12px",
+            cursor: "pointer",
+            fontSize: 13,
+          }}
+        >
+          <span style={{ color: ACTIVITY_COLORS[session.activity] }}>●</span>
+          <span
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
           >
-            <span className={DOT_COLOR[session.activity]}>●</span>
-            <span className="truncate">
-              {displayName(session.cwd, session.sessionId)}
-            </span>
-          </button>
-        </li>
+            {displayName(session)}
+          </span>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

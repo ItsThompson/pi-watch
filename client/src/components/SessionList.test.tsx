@@ -56,7 +56,7 @@ describe("SessionList", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders activity dot with correct color class", async () => {
+  it("renders activity dot with correct color", async () => {
     const session = makeSession({ activity: "pending_approval" });
     fetchMock.mockResolvedValue({
       json: () => Promise.resolve([session]),
@@ -66,7 +66,19 @@ describe("SessionList", () => {
     render(<SessionList />, { wrapper });
 
     const dot = await screen.findByText("●");
-    expect(dot).toHaveClass("text-activity-pending");
+    expect(dot).toHaveStyle({ color: "rgb(248, 81, 73)" });
+  });
+
+  it("prefers agentName over cwd basename for display", async () => {
+    const session = makeSession({ agentName: "My Cool Session" });
+    fetchMock.mockResolvedValue({
+      json: () => Promise.resolve([session]),
+      ok: true,
+    });
+
+    render(<SessionList />, { wrapper });
+
+    expect(await screen.findByText("My Cool Session")).toBeInTheDocument();
   });
 
   it("clicking a row calls fetch with the session id", async () => {
@@ -80,8 +92,8 @@ describe("SessionList", () => {
 
     render(<SessionList />, { wrapper });
 
-    const button = await screen.findByRole("button", { name: /my-project/ });
-    await userEvent.click(button);
+    const row = await screen.findByText("my-project");
+    await userEvent.click(row);
 
     expect(fetchMock).toHaveBeenCalledWith(
       "/api/open-terminal",

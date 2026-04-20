@@ -27,7 +27,7 @@ describe("ActivityLog", () => {
     });
 
     const dot = screen.getByText("●");
-    expect(dot).toHaveClass("text-activity-processing");
+    expect(dot).toHaveStyle({ color: "rgb(210, 153, 34)" });
     expect(screen.getByText(/abc12345 added/)).toBeInTheDocument();
   });
 });

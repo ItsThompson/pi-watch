@@ -1,12 +1,8 @@
 import type { ActivityStatus } from "@pi-watch/shared";
 import { useActivityLog } from "../hooks/useActivityLog";
+import { colors, ACTIVITY_COLORS } from "../theme/colors";
 
-const DOT_COLOR: Record<ActivityStatus, string> = {
-  idle: "text-activity-idle",
-  processing: "text-activity-processing",
-  running_tool: "text-activity-running",
-  pending_approval: "text-activity-pending",
-};
+const MAX_VISIBLE = 10;
 
 function entryLabel(event: { type: string; sessionId?: string }): string {
   const id = event.sessionId?.slice(0, 8) ?? "unknown";
@@ -25,22 +21,47 @@ function entryActivity(event: {
 export function ActivityLog() {
   const { entries } = useActivityLog();
 
-  if (entries.length === 0) return null;
+  const visible = entries.slice(0, MAX_VISIBLE);
+
+  if (visible.length === 0) return null;
 
   return (
-    <ul className="space-y-0.5 px-2 pt-1 border-t border-divider">
-      {entries.map((entry) => {
+    <div
+      style={{
+        borderTop: `1px solid ${colors.borderDivider}`,
+        padding: "6px 12px",
+      }}
+    >
+      {visible.map((entry) => {
         const activity = entryActivity(entry.event);
         return (
-          <li
+          <div
             key={entry.id}
-            className="flex items-center gap-2 text-xs text-muted"
+            style={{
+              fontSize: 11,
+              color: colors.textMuted,
+              padding: "2px 0",
+              display: "flex",
+              gap: 6,
+            }}
           >
-            <span className={DOT_COLOR[activity]}>●</span>
-            <span className="truncate">{entryLabel(entry.event)}</span>
-          </li>
+            <span
+              style={{ color: ACTIVITY_COLORS[activity], flexShrink: 0 }}
+            >
+              ●
+            </span>
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {entryLabel(entry.event)}
+            </span>
+          </div>
         );
       })}
-    </ul>
+    </div>
   );
 }
