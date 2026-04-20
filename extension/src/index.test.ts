@@ -135,6 +135,8 @@ describe("extension entry wiring", () => {
 
     // Advance timer to trigger heartbeat (which should re-call captureTmuxTarget)
     await vi.advanceTimersByTimeAsync(5000);
+    // Flush microtasks from the async interval callback
+    await vi.advanceTimersByTimeAsync(0);
 
     vi.useRealTimers();
 
