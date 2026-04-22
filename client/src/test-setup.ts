@@ -8,6 +8,15 @@ if (typeof globalThis.ResizeObserver === "undefined") {
   } as unknown as typeof globalThis.ResizeObserver;
 }
 
+globalThis.Audio = class MockAudio {
+  src = "";
+  play() { return Promise.resolve(); }
+} as unknown as typeof globalThis.Audio;
+
+if (typeof URL.createObjectURL === "undefined") {
+  URL.createObjectURL = () => "blob:mock";
+}
+
 export class MockEventSource {
   static instances: MockEventSource[] = [];
   readyState = 0;

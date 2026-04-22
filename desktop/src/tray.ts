@@ -3,12 +3,18 @@ import { resolve } from "node:path";
 
 let tray: Tray | null = null;
 
-export function createTray(
-  onToggle: () => boolean,
-  isVisible: () => boolean,
-  onGhostToggle: () => boolean,
-  isGhost: () => boolean,
-): void {
+export interface TrayMenuToggle {
+  onToggle: () => boolean;
+  isEnabled: () => boolean;
+}
+
+export interface TrayOptions {
+  visibility: TrayMenuToggle;
+  ghostMode: TrayMenuToggle;
+  soundAlerts: TrayMenuToggle;
+}
+
+export function createTray(options: TrayOptions): void {
   const iconPath = app.isPackaged
     ? resolve(process.resourcesPath, "assets/tray-iconTemplate.png")
     : resolve(__dirname, "../assets/tray-iconTemplate.png");
@@ -21,18 +27,27 @@ export function createTray(
       {
         label: "Show/Hide",
         type: "checkbox",
-        checked: isVisible(),
+        checked: options.visibility.isEnabled(),
         click: (menuItem) => {
-          const nowVisible = onToggle();
+          const nowVisible = options.visibility.onToggle();
           menuItem.checked = nowVisible;
         },
       },
       {
         label: "Ghost Mode",
         type: "checkbox",
-        checked: isGhost(),
+        checked: options.ghostMode.isEnabled(),
         click: (menuItem) => {
-          const nowEnabled = onGhostToggle();
+          const nowEnabled = options.ghostMode.onToggle();
+          menuItem.checked = nowEnabled;
+        },
+      },
+      {
+        label: "Sound Alerts",
+        type: "checkbox",
+        checked: options.soundAlerts.isEnabled(),
+        click: (menuItem) => {
+          const nowEnabled = options.soundAlerts.onToggle();
           menuItem.checked = nowEnabled;
         },
       },

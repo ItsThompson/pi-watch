@@ -101,3 +101,7 @@ export function showWindow(): void {
 export function _getTestState() {
   return { visible, ghostEnabled, ghostOpacityValue };
 }
+
+export function getMainWindow(): BrowserWindow | null {
+  return win;
+}

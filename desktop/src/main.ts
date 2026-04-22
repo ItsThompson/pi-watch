@@ -8,6 +8,7 @@ import {
   showWindow,
   setGhostMode,
   isWindowVisible,
+  getMainWindow,
   _getTestState,
 } from "./window.js";
 import { createTray } from "./tray.js";
@@ -44,17 +45,30 @@ app.on("ready", async () => {
   currentConfig = loadConfig(configPath);
   createWindow(server.SERVER_URL, currentConfig);
 
-  createTray(
-    toggleWindow,
-    isWindowVisible,
-    () => {
-      currentConfig.ghostMode = !currentConfig.ghostMode;
-      setGhostMode(currentConfig.ghostMode, currentConfig.ghostOpacity);
-      saveConfig(configPath, currentConfig);
-      return currentConfig.ghostMode;
+  createTray({
+    visibility: {
+      onToggle: toggleWindow,
+      isEnabled: isWindowVisible,
     },
-    () => currentConfig.ghostMode,
-  );
+    ghostMode: {
+      onToggle: () => {
+        currentConfig.ghostMode = !currentConfig.ghostMode;
+        setGhostMode(currentConfig.ghostMode, currentConfig.ghostOpacity);
+        saveConfig(configPath, currentConfig);
+        return currentConfig.ghostMode;
+      },
+      isEnabled: () => currentConfig.ghostMode,
+    },
+    soundAlerts: {
+      onToggle: () => {
+        currentConfig.soundEnabled = !currentConfig.soundEnabled;
+        saveConfig(configPath, currentConfig);
+        getMainWindow()?.webContents.send("pw:sound-toggled", currentConfig.soundEnabled);
+        return currentConfig.soundEnabled;
+      },
+      isEnabled: () => currentConfig.soundEnabled,
+    },
+  });
 
   const registered = globalShortcut.register("F5", toggleWindow);
   if (!registered) {
@@ -70,6 +84,8 @@ app.on("ready", async () => {
   }
 
   showWindow();
+
+  ipcMain.handle("pw:get-sound-enabled", () => currentConfig.soundEnabled);
 
   ipcMain.handle("pw:open-session", async (_event, sessionId: string) => {
     try {
