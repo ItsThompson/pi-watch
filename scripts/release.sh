@@ -106,6 +106,22 @@ else
   echo "package.json already at $NEW_VERSION, skipping bump."
 fi
 
+# --- Sync workspace versions ---
+
+WORKSPACES=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).workspaces.join(' ')")
+for ws in $WORKSPACES; do
+  if [[ -f "$ws/package.json" ]]; then
+    node -e "
+      const fs = require('fs');
+      const path = '$ws/package.json';
+      const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+      pkg.version = '$NEW_VERSION';
+      fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\\n');
+    "
+    echo "  $ws -> $NEW_VERSION"
+  fi
+done
+
 # --- Build distribution ---
 
 echo "Running npm run dist..."
