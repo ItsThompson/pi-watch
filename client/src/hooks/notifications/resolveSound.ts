@@ -18,8 +18,12 @@ export function resolveSound(
   const prev = lastActivity.get(sessionId);
   lastActivity.set(sessionId, activity);
 
-  if (activity === prev) return null;
-  if (prev !== undefined && SUPPRESSED_PAIRS.has(`${prev}:${activity}`)) return null;
+  if (activity === prev) {
+    return null;
+  }
+  if (prev !== undefined && SUPPRESSED_PAIRS.has(`${prev}:${activity}`)) {
+    return null;
+  }
 
   return ACTIVITY_SOUND[activity];
 }

@@ -21,9 +21,13 @@ export function useActivitySounds(): void {
 
     const handleActivity = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
-      if (!soundEnabledRef.current) return;
+      if (!soundEnabledRef.current) {
+        return;
+      }
       const sound = resolveSound(data.sessionId, data.activity, lastActivity.current);
-      if (sound) playNotificationSound(sound);
+      if (sound) {
+        playNotificationSound(sound);
+      }
     };
 
     const handleRemoved = (event: MessageEvent) => {
