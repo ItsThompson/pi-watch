@@ -36,7 +36,7 @@ describe("loadConfig", () => {
   });
 
   it("returns full config when file is complete", () => {
-    const full = { ghostMode: true, ghostOpacity: 0.5, visible: false };
+    const full = { ghostMode: true, ghostOpacity: 0.5, visible: false, soundEnabled: true };
     writeFileSync(configPath, JSON.stringify(full));
     const config = loadConfig(configPath);
     expect(config).toEqual(full);
