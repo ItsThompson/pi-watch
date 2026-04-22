@@ -97,30 +97,14 @@ echo "Running tests and lint..."
 npm test
 npm run lint
 
-# --- Bump root package.json ---
+# --- Bump all package.json versions (root + workspaces) ---
 
 PKG_VERSION=$(node -p "require('./package.json').version")
 if [[ "$PKG_VERSION" != "$NEW_VERSION" ]]; then
-  npm version "$NEW_VERSION" --no-git-tag-version
+  npm version "$NEW_VERSION" --no-git-tag-version --include-workspace-root --workspaces
 else
-  echo "package.json already at $NEW_VERSION, skipping bump."
+  echo "All packages already at $NEW_VERSION, skipping bump."
 fi
-
-# --- Sync workspace versions ---
-
-WORKSPACES=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).workspaces.join(' ')")
-for ws in $WORKSPACES; do
-  if [[ -f "$ws/package.json" ]]; then
-    node -e "
-      const fs = require('fs');
-      const path = '$ws/package.json';
-      const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-      pkg.version = '$NEW_VERSION';
-      fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\\n');
-    "
-    echo "  $ws -> $NEW_VERSION"
-  fi
-done
 
 # --- Build distribution ---
 
