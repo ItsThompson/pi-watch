@@ -2,17 +2,21 @@ import { useEffect, useRef } from "react";
 import { SessionList } from "./components/SessionList";
 import { ActivityLog } from "./components/ActivityLog";
 import { colors } from "./theme/colors";
+import { useActivitySounds } from "./hooks/useActivitySounds";
 
 declare global {
   interface Window {
     piWatch?: {
       resizeMini: (height: number) => void;
       openSession: (id: string) => Promise<unknown>;
+      getSoundEnabled: () => Promise<boolean>;
+      onSoundToggle: (cb: (enabled: boolean) => void) => () => void;
     };
   }
 }
 
 export function App() {
+  useActivitySounds();
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
