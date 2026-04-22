@@ -1,17 +1,21 @@
 import "@testing-library/jest-dom";
 
 if (typeof globalThis.ResizeObserver === "undefined") {
-  globalThis.ResizeObserver = class ResizeObserver {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  } as unknown as typeof globalThis.ResizeObserver;
+  Object.defineProperty(globalThis, "ResizeObserver", {
+    value: class ResizeObserver {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  });
 }
 
-globalThis.Audio = class MockAudio {
-  src = "";
-  play() { return Promise.resolve(); }
-} as unknown as typeof globalThis.Audio;
+Object.defineProperty(globalThis, "Audio", {
+  value: class MockAudio {
+    src = "";
+    play() { return Promise.resolve(); }
+  },
+});
 
 if (typeof URL.createObjectURL === "undefined") {
   URL.createObjectURL = () => "blob:mock";
@@ -52,5 +56,4 @@ export class MockEventSource {
   }
 }
 
-(globalThis as unknown as { EventSource: typeof MockEventSource }).EventSource =
-  MockEventSource;
+Object.defineProperty(globalThis, "EventSource", { value: MockEventSource });
