@@ -1,5 +1,11 @@
 # pi-watch
 
+<p>
+  <a href="https://0rwx.com/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://0rwx.com/static/AI-X-dark.svg"><img src="https://0rwx.com/static/AI-X-light.svg" alt="0rwx EXECUTE: Human architected, AI executed" width="64" height="64"></picture></a>
+  <br>
+  <sub><strong>0rwx EXECUTE</strong>: Human architected, AI executed</sub>
+</p>
+
 A macOS menu bar application that surfaces every active pi coding session on the machine, shows per-session activity state (idle, processing, running tool, pending approval), and provides one-click tmux pane switching. Paired with a pi extension that reports session state via heartbeats.
 
 ## Prerequisites
